@@ -43,6 +43,7 @@ export type OriginalDataType = {
     league_name: string;
     league_logo: string;
     match_status: string;
+    match_time: string;
     match_id: string;
     match_hometeam_name: string;
     team_home_badge: string;
@@ -55,6 +56,7 @@ export type OriginalDataType = {
 // Tipo para la información del partido remapeada
 export type MatchInfo = {
     date: string;
+    time: string;
     league: string;
     logo: string;
     status: string;
@@ -65,7 +67,8 @@ export type MatchInfo = {
 export type TeamInfo = {
     name: string;
     srcLogo: string;
-    score: string;
+    score?: string;
+    orientation?: string;
 };
 
 // Tipo para los datos después del remapeo
@@ -73,6 +76,7 @@ export type RemappedDataType = {
     matchInfo: MatchInfo;
     teamHome: TeamInfo;
     teamAway: TeamInfo;
+    orientation?: string;
 };
 
 // Tipo de la función de remapeo

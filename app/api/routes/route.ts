@@ -11,7 +11,12 @@ export async function GET(req: NextRequest) {
       url += `&${key}=${encodeURIComponent(value)}`;
     });
 
-    const response = await fetch(url);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000); // Timeout de 20 segundos
+
+    const response = await fetch(url, { signal: controller.signal });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.status}`);
@@ -19,9 +24,15 @@ export async function GET(req: NextRequest) {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
+
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error fetching data:', error.message);
+    } else {
+      console.error('Unexpected error:', error);
+    }
     return NextResponse.json({ error: 'Error fetching data' }, { status: 500 });
   }
 }
+
 
