@@ -1,3 +1,5 @@
+import { CountriesWithLeagues } from "@/types/GameData";
+
 export const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const months = [
@@ -26,3 +28,34 @@ export const convertTimeToLocal = (timeString: string, timeZone: string): string
         minute: '2-digit',
     }).format(utcDate);
 };
+
+const groupLeaguesByCountry = (items: Item[]): CountriesWithLeagues[] => {
+    const grouped = items.reduce((acc: Record<number, CountriesWithLeagues>, item) => {
+        const countryId = item.country_id;
+
+        // Si el país ya existe en el acumulador, le agregamos la nueva liga
+        if (!acc[countryId]) {
+            acc[countryId] = {
+                country: {
+                    id: item.country_id,
+                    name: item.country_name,
+                    logo: item.country_logo,
+                },
+                leagues: [],
+            };
+        }
+
+        // Agregar la liga correspondiente al país
+        acc[countryId].leagues.push({
+            id: item.league_id,
+            name: item.league_name,
+            logo: item.league_logo,
+        });
+
+        return acc;
+    }, {});
+
+    // Convertir el objeto agrupado en un array
+    return Object.values(grouped);
+};
+

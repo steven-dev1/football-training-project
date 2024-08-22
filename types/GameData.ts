@@ -38,7 +38,7 @@ export interface Positions {
 
 }
 
-export type OriginalDataType = {
+export interface OriginalDataType  {
     match_date: string;
     league_name: string;
     league_logo: string;
@@ -54,7 +54,7 @@ export type OriginalDataType = {
 };
 
 // Tipo para la información del partido remapeada
-export type MatchInfo = {
+export interface MatchInfo  {
     date: string;
     time: string;
     league: string;
@@ -64,7 +64,7 @@ export type MatchInfo = {
 };
 
 // Tipo para la información del equipo remapeada
-export type TeamInfo = {
+export interface ItemInfo  {
     name: string;
     srcLogo: string;
     score?: string;
@@ -72,12 +72,30 @@ export type TeamInfo = {
 };
 
 // Tipo para los datos después del remapeo
-export type RemappedDataType = {
+export interface RemappedDataType  {
     matchInfo: MatchInfo;
-    teamHome: TeamInfo;
-    teamAway: TeamInfo;
+    teamHome: ItemInfo;
+    teamAway: ItemInfo;
     orientation?: string;
 };
+
+export interface Country {
+    id: string;
+    name: string;
+    logo: string;
+}
+
+export interface League {
+    id: string;
+    name: string;
+    logo: string;
+    season: string;
+}
+
+export interface CountriesWithLeagues  {
+    country: Country;
+    leagues: League[];
+}
 
 // Tipo de la función de remapeo
 export type RemapFunctionType = (data: OriginalDataType[]) => RemappedDataType[];

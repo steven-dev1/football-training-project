@@ -17,7 +17,7 @@ export default function Home() {
 
   return (
     <div className='flex items-start gap-4 max-w-[1280px] justify-evenly mx-auto'>
-      <div className='w-3/4'>
+      <div className='w-1/4'>
         <LeftNav />
       </div>
       <div className='flex flex-col justify-center'>
