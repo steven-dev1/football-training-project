@@ -3,6 +3,8 @@ import { RemapFunctionType, RemappedDataType } from '@/types/GameData';
 import React, { useCallback, useMemo } from 'react'
 import CardFinished from '../Cards/CardFinishedMatch';
 import { Star } from 'lucide-react';
+import SkeletonMatchCard from '../Cards/SkeletonMatchFinished';
+import SkeletonFavoritesSection from './SkeletonFavoritesSection';
 
 export default function FavouritesSection() {
     const queryParams = useMemo(() => new URLSearchParams({
@@ -37,12 +39,12 @@ export default function FavouritesSection() {
 
     const { data, isLoading, isError } = useCustomData(remapFunction, queryParams);
 
-    if(isLoading) return <div>Cargando favoritos...</div>
-    if(isError) return <div>Ocurrio un error al cargar los favoritos!</div>
+    if(isLoading) return <SkeletonFavoritesSection />
+    if(isError) return <div className='bg-red-400 text-white p-2 rounded-lg'>Ocurrio un error al cargar los favoritos!</div>
     return (
-        <div>
-            <h1 className='text-sm flex items-center gap-1 font-semibold mx-2'><Star size={18} />Favoritos</h1>
-            <div className='flex flex-wrap gap-2 m-2 w-full'>
+        <>
+            <h1 className='text-sm flex items-center gap-1 font-semibold mr-2 mb-2'><Star size={18} />Favoritos</h1>
+            <div className='flex flex-wrap justify-evenly gap-2 w-full'>
                 {data.map((match: RemappedDataType) => {
                     return (
                         <CardFinished
@@ -55,6 +57,6 @@ export default function FavouritesSection() {
                     )
                 })}
             </div>
-        </div>
+        </>
     )
 }

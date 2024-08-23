@@ -16,14 +16,14 @@ import FavouritesSection from '@/components/Sections/FavouritesSection';
 export default function Home() {
 
   return (
-    <div className='flex items-start gap-4 max-w-[1280px] justify-evenly mx-auto'>
+    <div className='flex items-start max-w-[1280px] justify-evenly mx-auto'>
       <div className='w-1/4'>
         <LeftNav />
       </div>
-      <div className='flex flex-col justify-center'>
-          <FavouritesSection />
+      <div className='w-full flex flex-col p-2 justify-between'>
+        <FavouritesSection />
       </div>
-      <div className='w-full'>
+      <div className=''>
         <StandingTable />
       </div>
     </div>

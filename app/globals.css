@@ -19,6 +19,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: #131313;
+  box-sizing: border-box;
 }
 
 @layer utilities {
