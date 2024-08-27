@@ -1,7 +1,7 @@
 import { useCustomData } from '@/hooks/useCustomData';
 import { RemapFunctionType, RemappedDataType } from '@/types/GameData';
 import React, { useCallback, useMemo } from 'react'
-import CardFinished from '../Cards/CardFinishedMatch';
+import CardFinished from '../Cards/CardMatch';
 import { Star } from 'lucide-react';
 import SkeletonMatchCard from '../Cards/SkeletonMatchFinished';
 import SkeletonFavoritesSection from './SkeletonFavoritesSection';

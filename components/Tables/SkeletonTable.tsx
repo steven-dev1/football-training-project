@@ -2,7 +2,7 @@ import { SkeletonTableRow } from "./SkeletonTableRow";
 
 const SkeletonTable = () => {
     return (
-      <div className="relative w-[285px] overflow-x-auto shadow-md sm:rounded-lg m-2 py-2 bg-projectGrays-300 animate-pulse">
+      <div className="relative w-[285px] overflow-x-auto shadow-md sm:rounded-lg m-2 py-2 bg-projectGrays-300">
         <div className="flex flex-col justify-center items-center">
           <div>
             <div className="bg-gray-300 h-4 w-[150px] rounded mt-2 mb-1"></div>
@@ -27,7 +27,6 @@ const SkeletonTable = () => {
             </tr>
           </thead>
           <tbody>
-            it
           </tbody>
         </table>
       </div>

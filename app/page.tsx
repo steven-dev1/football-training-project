@@ -1,5 +1,5 @@
 'use client'
-import CardFinishedMatch from '@/components/Cards/CardFinishedMatch';
+import CardFinishedMatch from '@/components/Cards/CardMatch';
 import StandingTable from '@/components/Tables/StandingTable';
 import { RemappedDataType } from '@/types/GameData';
 import useSWR from 'swr';

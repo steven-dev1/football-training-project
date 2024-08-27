@@ -1,4 +1,4 @@
-import { CountriesWithLeagues } from "@/types/GameData";
+import { CountriesWithLeagues, ItemInfo } from "@/types/GameData";
 
 export const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -15,6 +15,7 @@ export const formatDate = (dateString: string): string => {
 };
 
 export const convertTimeToLocal = (timeString: string, timeZone: string): string => {
+    if(!timeString || !timeZone) return '00:00'
     // Crear una fecha ficticia añadiendo la hora
     const [hours, minutes] = timeString.split(':').map(Number);
 
@@ -29,7 +30,7 @@ export const convertTimeToLocal = (timeString: string, timeZone: string): string
     }).format(utcDate);
 };
 
-const groupLeaguesByCountry = (items: Item[]): CountriesWithLeagues[] => {
+export const groupLeaguesByCountry = (items: ItemInfo[]): CountriesWithLeagues[] => {
     const grouped = items.reduce((acc: Record<number, CountriesWithLeagues>, item) => {
         const countryId = item.country_id;
 

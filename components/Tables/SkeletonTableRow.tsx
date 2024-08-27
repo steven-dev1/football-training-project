@@ -1,6 +1,6 @@
 export const SkeletonTableRow = () => {
     return (
-      <tr className="odd:bg-[#2C2C2C] p-2 rounded-lg animate-pulse">
+      <tr className="odd:bg-[#2C2C2C] p-2 rounded-lg">
         <td className="m-1 ml-0 pl-2 text-center w-8 font-semibold">
           <div className="bg-gray-300 h-4 w-4 rounded"></div>
         </td>

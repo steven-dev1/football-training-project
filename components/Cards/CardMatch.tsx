@@ -3,7 +3,7 @@ import LogoItem from '../Teams/LogoItem'
 import { RemappedDataType } from '@/types/GameData'
 import { formatDate, convertTimeToLocal } from '@/utils/helpers'
 
-export default function CardFinished({ matchInfo, teamHome, teamAway, orientation }: RemappedDataType) {
+export default function CardMatch({ matchInfo, teamHome, teamAway, orientation }: RemappedDataType) {
   const dateStr = matchInfo.date;
   const formattedDate = formatDate(dateStr);
   const localTime = convertTimeToLocal(matchInfo.time, 'America/Bogota');

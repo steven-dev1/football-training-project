@@ -4,7 +4,7 @@ import SkeletonMatchCard from '../Cards/SkeletonMatchFinished'
 export default function SkeletonFavoritesSection() {
     return (
         <div>
-            <div className="flex items-center gap-1 animate-pulse mb-2 mr-2">
+            <div className="flex items-center gap-1 mb-2 mr-2">
                 <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
                 <div className="bg-gray-300 h-4 w-[80px] rounded"></div>
             </div>
