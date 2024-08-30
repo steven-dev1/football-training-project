@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import useSWR from 'swr'
-import { RemapFunctionType, Stats } from '@/types/GameData';
+import { Stats } from '@/types/GameData';
 import LogoItem from '../Teams/LogoItem';
 import SkeletonTable from './SkeletonTable';
 import { useCustomData } from '@/hooks/useCustomData';

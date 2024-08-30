@@ -1,45 +1,20 @@
 import { useCustomData } from '@/hooks/useCustomData';
-import { RemapFunctionType, RemappedDataType } from '@/types/GameData';
-import React, { useCallback, useMemo } from 'react'
+import {Favorites } from '@/types/GameData';
+import React, { useMemo } from 'react'
 import SkeletonFavoritesSection from './SkeletonFavoritesSection';
 import { BsStarFill } from "react-icons/bs";
 import CardMatch from '../Cards/CardMatch/CardMatch';
+import { remapFavorites } from '@/infrastructure/util/remap';
 
-export default function FavouritesSection() {
+export default function FavoritesSection() {
     const queryParams = useMemo(() => new URLSearchParams({
         action: 'get_events',
         from: '2024-08-01',
         to: '2024-09-01',
         team_id: '10091'
     }).toString(), []);
-
-    const remapFunction: RemapFunctionType = useCallback((data) => {
-        return data.map(item => ({
-            matchInfo: {
-                date: item.match_date,
-                time: item.match_time,
-                league: item.league_name,
-                logo: item.league_logo,
-                live: item.match_live,
-                status: item.match_status,
-                id: item.match_id,
-            },
-            teamHome: {
-                id: item.match_hometeam_id,
-                name: item.match_hometeam_name,
-                srcLogo: item.team_home_badge,
-                score: item.match_hometeam_score,
-            },
-            teamAway: {
-                id: item.match_awayteam_id,
-                name: item.match_awayteam_name,
-                srcLogo: item.team_away_badge,
-                score: item.match_awayteam_score,
-            }
-        }));
-    }, []);
-
-    const { data, isLoading, isError } = useCustomData(remapFunction, queryParams);
+    const { data, isLoading, isError } = useCustomData(remapFavorites, queryParams);
+    
 
     if (isLoading) return <SkeletonFavoritesSection />
     if (isError) return <div className='bg-red-400 text-white p-2 rounded-lg'>Ocurrio un error al cargar los favoritos!</div>
@@ -50,7 +25,7 @@ export default function FavouritesSection() {
 
             </div>
             <div className='grid grid-cols-2 justify-between gap-1 w-full'>
-                {data.slice(-2).map((match: RemappedDataType) => {
+                {data.slice(-2).map((match: Favorites) => {
                     return (
                         <CardMatch
                             key={match.matchInfo.id}

@@ -7,7 +7,8 @@ import SkeletonLigas from './SkeletonLeagues';
 import { ToggleCountriesButton } from '../Buttons/ToggleCountriesButton';
 import { CountryList } from './CountryList';
 import { useAccordionToggle } from '@/hooks/useAccordionToggle';
-import { SortButton } from '../Buttons/sortButton';
+import { SortButton } from '../Buttons/SortButton';
+import { remapLeaguesByCountry } from '@/infrastructure/util/remap';
 
 export default function LeftNav() {
     const { id, showItems } = useAccordionToggle();
@@ -18,31 +19,7 @@ export default function LeftNav() {
         action: 'get_leagues',
     }).toString(), []);
 
-    const remapFunction = useCallback((data: any[]) => {
-        return data.reduce((acc: Record<string, CountriesWithLeagues>, item: any) => {
-            const country: Country = {
-                id: item.country_id,
-                name: item.country_name,
-                logo: item.country_logo,
-            };
-            const league: League = {
-                id: item.league_id,
-                name: item.league_name,
-                logo: item.league_logo,
-            };
-
-            if (!acc[country.id]) {
-                acc[country.id] = {
-                    country,
-                    leagues: []
-                };
-            }
-            acc[country.id].leagues.push(league);
-            return acc;
-        }, {} as Record<string, CountriesWithLeagues>);
-    }, []);
-
-    const { data, isLoading, isError } = useCustomData(remapFunction, queryParams);
+    const { data, isLoading, isError } = useCustomData(remapLeaguesByCountry, queryParams);
 
     if (isLoading) return <div><SkeletonLigas /></div>;
     if (isError) return <div>Error al cargar ligas</div>;

@@ -11,50 +11,21 @@ export interface Stats {
 }
 
 export interface StatsTeam {
+    team: TeamStats,
+    asHome: TeamStats,
+    asAway: TeamStats
+}
+
+export interface TeamStats {
     position: number,
-    payed: string,
+    played: string,
     wins: string,
     draws: string,
     losses: string,
     goalsFavor: string,
     goalsAgainst: string,
     points: string,
-    homePosition: string,
-    homePayed: string,
-    homeWins: string,
-    homeDraws: string,
-    homeLosses: string,
-    homeGoalsFavor: string,
-    homeGoalsAgainst: string,
-    homePoints: string,
-    awayPosition: string,
-    away_league_payed: string,
-    awayWins: string,
-    awayDraws: string,
-    awayLosses: string,
-    awayGoalsFavor: string,
-    awayGoalsAgainst: string,
-    awayPoints: string,
 }
-
-export interface OriginalDataType {
-    match_date: string;
-    league_name: string;
-    league_logo: string;
-    match_status: string;
-    match_time: string;
-    match_id: string;
-    match_live: string;
-    match_hometeam_id: string
-    match_hometeam_name: string;
-    team_home_badge: string;
-    match_hometeam_score: string;
-    match_awayteam_id: string
-    match_awayteam_name: string;
-    team_away_badge: string;
-    match_awayteam_score: string;
-};
-
 // Tipo para la información del partido remapeada
 export interface MatchInfo {
     date: string;
@@ -72,11 +43,11 @@ export interface ItemInfo {
     name: string;
     srcLogo: string;
     score?: string;
-    orientation?: string;
+    orientation?: 'vertical' | 'horizontal';
 };
 
 // Tipo para los datos después del remapeo
-export interface RemappedDataType {
+export interface Favorites {
     matchInfo: MatchInfo;
     teamHome: ItemInfo;
     teamAway: ItemInfo;
@@ -100,6 +71,3 @@ export interface CountriesWithLeagues {
     country: Country;
     leagues: League[];
 }
-
-// Tipo de la función de remapeo
-export type RemapFunctionType = (data: OriginalDataType[]) => RemappedDataType[];
