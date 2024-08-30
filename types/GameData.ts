@@ -1,41 +1,40 @@
-export interface Positions {
-    country_name: string,
-    league_id: string,
-    league_name: string,
-    team_id: string,
-    team_name: string,
-    overall_promotion: string,
-    overall_league_position: number,
-    overall_league_payed: string,
-    overall_league_W: string,
-    overall_league_D: string,
-    overall_league_L: string,
-    overall_league_GF: string,
-    overall_league_GA: string,
-    overall_league_PTS: string,
-    home_league_position: string,
-    home_promotion: string,
-    home_league_payed: string,
-    home_league_W: string,
-    home_league_D: string,
-    home_league_L: string,
-    home_league_GF: string,
-    home_league_GA: string,
-    home_league_PTS: string,
-    away_league_position: string,
-    away_promotion: string,
-    away_league_payed: string,
-    away_league_W: string,
-    away_league_D: string,
-    away_league_L: string,
-    away_league_GF: string,
-    away_league_GA: string,
-    away_league_PTS: string,
-    league_round: string,
-    team_badge: string,
-    fk_stage_key: string,
-    stage_name: string
+export interface Stats {
+    country: string,
+    leagueId: string,
+    leagueName: string,
+    promotion: string,
+    teamInfo: ItemInfo,
+    statsTeam: StatsTeam
+    leagueRound: string,
+    stageName: string
 
+}
+
+export interface StatsTeam {
+    position: number,
+    payed: string,
+    wins: string,
+    draws: string,
+    losses: string,
+    goalsFavor: string,
+    goalsAgainst: string,
+    points: string,
+    homePosition: string,
+    homePayed: string,
+    homeWins: string,
+    homeDraws: string,
+    homeLosses: string,
+    homeGoalsFavor: string,
+    homeGoalsAgainst: string,
+    homePoints: string,
+    awayPosition: string,
+    away_league_payed: string,
+    awayWins: string,
+    awayDraws: string,
+    awayLosses: string,
+    awayGoalsFavor: string,
+    awayGoalsAgainst: string,
+    awayPoints: string,
 }
 
 export interface OriginalDataType {
@@ -45,9 +44,12 @@ export interface OriginalDataType {
     match_status: string;
     match_time: string;
     match_id: string;
+    match_live: string;
+    match_hometeam_id: string
     match_hometeam_name: string;
     team_home_badge: string;
     match_hometeam_score: string;
+    match_awayteam_id: string
     match_awayteam_name: string;
     team_away_badge: string;
     match_awayteam_score: string;
@@ -56,6 +58,7 @@ export interface OriginalDataType {
 // Tipo para la información del partido remapeada
 export interface MatchInfo {
     date: string;
+    live: string;
     time: string;
     league: string;
     logo: string;
@@ -65,6 +68,7 @@ export interface MatchInfo {
 
 // Tipo para la información del equipo remapeada
 export interface ItemInfo {
+    id: string;
     name: string;
     srcLogo: string;
     score?: string;
@@ -76,7 +80,7 @@ export interface RemappedDataType {
     matchInfo: MatchInfo;
     teamHome: ItemInfo;
     teamAway: ItemInfo;
-    orientation?: string;
+    orientation?: 'vertical' | 'horizontal';
 };
 
 export interface Country {
@@ -89,15 +93,12 @@ export interface League {
     id: string;
     name: string;
     logo: string;
-    season: string;
+    season?: string;
 }
 
 export interface CountriesWithLeagues {
-    id: string;
-    name: string;
-    logo: string;
+    country: Country;
     leagues: League[];
-
 }
 
 // Tipo de la función de remapeo

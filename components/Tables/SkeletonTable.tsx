@@ -27,6 +27,9 @@ const SkeletonTable = () => {
             </tr>
           </thead>
           <tbody>
+            {[...Array(10)].map((_, index) => (
+              <SkeletonTableRow key={index} />
+            ))}
           </tbody>
         </table>
       </div>

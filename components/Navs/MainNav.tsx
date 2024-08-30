@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function MainNav() {
   return (
-    <nav className='w-full bg-[#2C2C2C] p-3 flex flex-col gap-2 items-center justify-evenly mb-8'>
+    <nav className='w-full fixed z-10 bg-[#2C2C2C] p-3 flex flex-col gap-2 items-center justify-evenly mb-8'>
         <div>
             <h1 className='p-1 font-bold text-lg'>FootballAPI <span className='bg-blue-500 p-1 rounded-lg'>Training</span></h1>
         </div>

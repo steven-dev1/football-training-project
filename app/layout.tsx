@@ -18,8 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={` ${montserrat.className}`}>
-        <MainNav />
-        {children}
+        <header>
+          <MainNav />
+        </header>
+        <main className='flex pt-[125px] items-start max-w-[1280px] justify-evenly mx-auto'>
+          {children}
+        </main>
       </body>
     </html>
   );
