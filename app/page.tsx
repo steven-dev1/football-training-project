@@ -1,7 +1,7 @@
 'use client'
 import StandingTable from '@/components/Tables/StandingTable';
 import LeftNav from '@/components/Navs/LeftNav';
-import FavouritesSection from '@/components/Sections/FavouritesSection';
+import FavoritesSection from '@/components/Sections/FavouritesSection';
 import MatchesSection from '@/components/Sections/MatchesSection';
 export default function Home() {
 
@@ -11,7 +11,7 @@ export default function Home() {
         <LeftNav />
       </div>
       <div className='w-full flex flex-col p-2 items-center'>
-        <FavouritesSection />
+        <FavoritesSection />
         <MatchesSection />
       </div>
       <div className=''>
