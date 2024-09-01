@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { customFetcher } from '@/utils/fetchers';
+import { customFetcher } from '@/infrastructure/utils/fetchers';
 import { useCallback } from 'react';
 
 

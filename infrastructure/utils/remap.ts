@@ -1,6 +1,6 @@
+import { OriginalApiData } from "@/types/Api.model";
 import { RemapFunctionType } from "@/types/Functions";
 import { CountriesWithLeagues, Country, Favorites, League } from "@/types/GameData";
-import { OriginalApiData } from "@/types/api.model";
 
 export const remapFavorites: RemapFunctionType<Favorites, OriginalApiData> = (data) => {
     return data.map((item)  => ({

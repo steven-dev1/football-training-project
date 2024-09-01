@@ -1,4 +1,4 @@
-import { CountriesWithLeagues, ItemInfo, RemappedDataType } from "@/types/GameData";
+import { CountriesWithLeagues } from "@/types/GameData";
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -61,10 +61,10 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
 };
 
 
-export const statusFilters: Record<number, (match: RemappedDataType) => boolean> = {
+export const statusFilters: Record<number, (match: any) => boolean> = {
   0: () => true, // Mostrar todos los partidos
-  1: (match: RemappedDataType) => match.matchInfo.live === '1', // Mostrar partidos en vivo
-  2: (match: RemappedDataType) => match.matchInfo.status === '', // Mostrar partidos próximos
-  3: (match: RemappedDataType) => match.matchInfo.status === 'Finalizado', // Mostrar partidos terminados
+  1: (match: any) => match.matchInfo.live === '1', // Mostrar partidos en vivo
+  2: (match: any) => match.matchInfo.status === '', // Mostrar partidos próximos
+  3: (match: any) => match.matchInfo.status === 'Finalizado', // Mostrar partidos terminados
 };
 
