@@ -1,10 +1,17 @@
 import React from 'react'
-import { RemappedDataType } from '@/types/GameData'
-import { formatDate, convertTimeToLocal } from '@/utils/helpers'
 import { MatchHorizontal } from './MatchHorizontal';
 import { MatchVertical } from './MatchVertical';
+import { convertTimeToLocal, formatDate } from '@/infrastructure/utils/helpers';
+import { ItemInfo, MatchInfo } from '@/types/GameData';
 
-export default function CardMatch({ matchInfo, teamHome, teamAway, orientation }: RemappedDataType) {
+interface CardMatchProps {
+  matchInfo: MatchInfo;
+  teamHome: ItemInfo;
+  teamAway: ItemInfo;
+  orientation: "horizontal" | "vertical";
+}
+
+export default function CardMatch({ matchInfo, teamHome, teamAway, orientation }: CardMatchProps) {
   const dateStr = matchInfo.date;
   const formattedDate = formatDate(dateStr);
   const localTime = convertTimeToLocal(matchInfo.time, 'America/Bogota');

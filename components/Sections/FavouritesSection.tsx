@@ -4,14 +4,14 @@ import React, { useMemo } from 'react'
 import SkeletonFavoritesSection from './SkeletonFavoritesSection';
 import { BsStarFill } from "react-icons/bs";
 import CardMatch from '../Cards/CardMatch/CardMatch';
-import { remapFavorites } from '@/infrastructure/util/remap';
+import { remapFavorites } from '@/infrastructure/utils/remap';
 
 export default function FavoritesSection() {
     const queryParams = useMemo(() => new URLSearchParams({
         action: 'get_events',
         from: '2024-08-01',
-        to: '2024-09-01',
-        team_id: '10091'
+        to: '2024-09-02',
+        team_id: '544'
     }).toString(), []);
     const { data, isLoading, isError } = useCustomData(remapFavorites, queryParams);
     

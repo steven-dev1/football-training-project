@@ -1,4 +1,3 @@
-
 export interface OriginalApiData {
   match_id: string;
   country_id: string;
@@ -7,7 +6,7 @@ export interface OriginalApiData {
   league_name: string;
   match_date: string;
   match_status: MatchStatus;
-  match_time: MatchTime;
+  match_time: string;
   match_hometeam_id: string;
   match_hometeam_name: string;
   match_hometeam_score: string;
@@ -41,6 +40,42 @@ export interface OriginalApiData {
   lineup: Lineup;
   statistics: Statistic[];
   statistics_1half: Statistic[];
+
+  team_id: string;
+  team_name: string;
+  overall_promotion: string;
+  overall_league_position: string;
+  overall_league_payed: string;
+  overall_league_W: string;
+  overall_league_D: string;
+  overall_league_L: string;
+  overall_league_GF: string;
+  overall_league_GA: string;
+  overall_league_PTS: string;
+  home_league_position: string;
+  home_promotion: string;
+  home_league_payed: string;
+  home_league_W: string;
+  home_league_D: string;
+  home_league_L: string;
+  home_league_GF: string;
+  home_league_GA: string;
+  home_league_PTS: string;
+  away_league_position: string;
+  away_promotion: string;
+  away_league_payed: string;
+  away_league_W: string;
+  away_league_D: string;
+  away_league_L: string;
+  away_league_GF: string;
+  away_league_GA: string;
+  away_league_PTS: string;
+  league_round: string;
+  team_badge: string;
+}
+
+export interface TeamStats {
+
 }
 
 export interface CardElement {
@@ -112,12 +147,9 @@ export interface Coach {
 export enum MatchStatus {
   Empty = "",
   Finished = "Finished",
-}
-
-export enum MatchTime {
-  The1700 = "17:00",
-  The1745 = "17:45",
-  The2000 = "20:00",
+  InProgress = "In Progress",
+  Postponed = "Postponed",
+  Scheduled = "Scheduled",
 }
 
 export interface Statistic {

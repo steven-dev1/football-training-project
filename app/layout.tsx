@@ -21,7 +21,7 @@ export default function RootLayout({
         <header>
           <MainNav />
         </header>
-        <main className='flex pt-[125px] items-start max-w-[1280px] justify-evenly mx-auto'>
+        <main className='flex pt-[125px] items-start max-w-[1280px] justify-center mx-auto'>
           {children}
         </main>
       </body>

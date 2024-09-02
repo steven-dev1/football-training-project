@@ -1,9 +1,9 @@
 import { OriginalApiData } from "@/types/Api.model";
 import { RemapFunctionType } from "@/types/Functions";
-import { CountriesWithLeagues, Country, Favorites, League } from "@/types/GameData";
+import { CountriesWithLeagues, Country, Favorites, League, StandingTables } from "@/types/GameData";
 
 export const remapFavorites: RemapFunctionType<Favorites, OriginalApiData> = (data) => {
-    return data.map((item)  => ({
+    return data.map((item) => ({
         matchInfo: {
             date: item.match_date,
             time: item.match_time,
@@ -47,7 +47,54 @@ export const remapLeaguesByCountry: RemapFunctionType<CountriesWithLeagues, Orig
                 leagues: []
             };
         }
-        accumulator[country.id].leagues.push(league);
+        accumulator[country.id]?.leagues.push(league);
         return accumulator;
     }, {} as Record<string, CountriesWithLeagues>);
 }
+
+export const remapStandingTable: RemapFunctionType<StandingTables, OriginalApiData> = (data) => {
+    return data.map((item) => ({
+        countryName: item.country_name,  
+        league: {
+            id: item.league_id,
+            name: item.league_name,
+            season: item.stage_name
+        },
+        teamInfo: { 
+            id: item.team_id,
+            name: item.team_name,
+            srcLogo: item.team_badge,
+        },
+        teamStats: {
+            position: Number(item.overall_league_position), 
+            played: item.overall_league_payed,
+            wins: item.overall_league_W,
+            draws: item.overall_league_D,
+            losses: item.overall_league_L,
+            goalsFavor: item.overall_league_GF,
+            goalsAgainst: item.overall_league_GA,
+            points: item.overall_league_PTS,
+        },
+        homeStats: {
+            position: Number(item.home_league_position),
+            played: item.home_league_payed,
+            wins: item.home_league_W,
+            draws: item.home_league_D,
+            losses: item.home_league_L,
+            goalsFavor: item.home_league_GF,
+            goalsAgainst: item.home_league_GA,
+            points: item.home_league_PTS,
+        },
+        awayStats: {
+            position: Number(item.away_league_position), 
+            played: item.away_league_payed,
+            wins: item.away_league_W,
+            draws: item.away_league_D,
+            losses: item.away_league_L,
+            goalsFavor: item.away_league_GF,
+            goalsAgainst: item.away_league_GA,
+            points: item.away_league_PTS,
+        }
+    }));
+};
+

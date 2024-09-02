@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import CardMatch from '../Cards/CardMatch/CardMatch'
-import { RemapFunctionType, RemappedDataType } from '@/types/GameData'
 import { useCustomData } from '@/hooks/useCustomData';
-import { statusFilters } from '@/utils/helpers';
+import { statusFilters } from '@/infrastructure/utils/helpers';
+import { remapFavorites } from '@/infrastructure/utils/remap';
 
 interface MatchesListProps {
     date: string;
@@ -25,30 +25,7 @@ export default function MatchesList({ date, status }: MatchesListProps) {
     }, [date, status]);
 
 
-    const remapFunction: RemapFunctionType = useCallback((data) => {
-        return data.map(item => ({
-            matchInfo: {
-                date: item.match_date,
-                time: item.match_time,
-                league: item.league_name,
-                logo: item.league_logo,
-                status: item.match_status,
-                id: item.match_id,
-                live: item.match_live
-            },
-            teamHome: {
-                name: item.match_hometeam_name,
-                srcLogo: item.team_home_badge,
-                score: item.match_hometeam_score,
-            },
-            teamAway: {
-                name: item.match_awayteam_name,
-                srcLogo: item.team_away_badge,
-                score: item.match_awayteam_score,
-            }
-        }));
-    }, []);
-    const { data, isLoading, isError } = useCustomData(remapFunction, queryParams);
+    const { data, isLoading, isError } = useCustomData(remapFavorites, queryParams);
 
     const matchesByLeague = data?.reduce((acc: Record<string, RemappedDataType[]>, match: RemappedDataType) => {
         const leagueName = match.matchInfo.league;

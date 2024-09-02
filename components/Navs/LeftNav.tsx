@@ -1,14 +1,14 @@
 'use client'
 import { GalleryVerticalEnd } from 'lucide-react'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useCustomData } from '@/hooks/useCustomData';
-import { CountriesWithLeagues, Country, League } from '@/types/GameData';
+import { CountriesWithLeagues} from '@/types/GameData';
 import SkeletonLigas from './SkeletonLeagues';
 import { ToggleCountriesButton } from '../Buttons/ToggleCountriesButton';
 import { CountryList } from './CountryList';
 import { useAccordionToggle } from '@/hooks/useAccordionToggle';
 import { SortButton } from '../Buttons/SortButton';
-import { remapLeaguesByCountry } from '@/infrastructure/util/remap';
+import { remapLeaguesByCountry } from '@/infrastructure/utils/remap';
 
 export default function LeftNav() {
     const { id, showItems } = useAccordionToggle();

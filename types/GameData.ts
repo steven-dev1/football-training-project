@@ -1,16 +1,4 @@
-export interface Stats {
-    country: string,
-    leagueId: string,
-    leagueName: string,
-    promotion: string,
-    teamInfo: ItemInfo,
-    statsTeam: StatsTeam
-    leagueRound: string,
-    stageName: string
-
-}
-
-export interface StatsTeam {
+export interface TeamPerformance {
     team: TeamStats,
     asHome: TeamStats,
     asAway: TeamStats
@@ -26,7 +14,16 @@ export interface TeamStats {
     goalsAgainst: string,
     points: string,
 }
-// Tipo para la información del partido remapeada
+
+export interface StandingTables {
+    countryName: string
+    league: League;
+    teamInfo: ItemInfo;
+    teamStats: TeamStats;
+    homeStats: TeamStats;
+    awayStats: TeamStats;
+}
+
 export interface MatchInfo {
     date: string;
     live: string;
@@ -37,7 +34,7 @@ export interface MatchInfo {
     id: string;
 };
 
-// Tipo para la información del equipo remapeada
+
 export interface ItemInfo {
     id: string;
     name: string;
@@ -46,7 +43,6 @@ export interface ItemInfo {
     orientation?: 'vertical' | 'horizontal';
 };
 
-// Tipo para los datos después del remapeo
 export interface Favorites {
     matchInfo: MatchInfo;
     teamHome: ItemInfo;
@@ -57,14 +53,15 @@ export interface Favorites {
 export interface Country {
     id: string;
     name: string;
-    logo: string;
+    logo?: string;
 }
 
 export interface League {
     id: string;
     name: string;
-    logo: string;
+    logo?: string;
     season?: string;
+    round?: string;
 }
 
 export interface CountriesWithLeagues {
