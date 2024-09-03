@@ -43,7 +43,7 @@ export interface ItemInfo {
     orientation?: 'vertical' | 'horizontal';
 };
 
-export interface Favorites {
+export interface Match {
     matchInfo: MatchInfo;
     teamHome: ItemInfo;
     teamAway: ItemInfo;
@@ -67,4 +67,9 @@ export interface League {
 export interface CountriesWithLeagues {
     country: Country;
     leagues: League[];
+}
+
+export interface MatchesByLeague {
+    league: League;
+    matches: Match[];
 }

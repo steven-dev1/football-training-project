@@ -20,7 +20,7 @@ export const convertTimeToLocal = (timeString: string, timeZone: string): string
   const [hours, minutes] = timeString.split(':').map(Number);
 
   // Suponiendo que la hora es en UTC (o ajustable)
-  const utcDate = new Date(Date.UTC(2024, 7, 29, hours - 2, minutes)); // Añadir cualquier fecha válida
+  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); // Añadir cualquier fecha válida
 
   // Convertir a la hora local usando Intl.DateTimeFormat
   return new Intl.DateTimeFormat('en-US', {

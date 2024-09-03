@@ -20,7 +20,6 @@ export default function LeftNav() {
     }).toString(), []);
 
     const { data, isLoading, isError } = useCustomData(remapLeaguesByCountry, queryParams);
-
     if (isLoading) return <div><SkeletonLigas /></div>;
     if (isError) return <div>Error al cargar ligas</div>;
 

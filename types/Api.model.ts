@@ -40,7 +40,6 @@ export interface OriginalApiData {
   lineup: Lineup;
   statistics: Statistic[];
   statistics_1half: Statistic[];
-
   team_id: string;
   team_name: string;
   overall_promotion: string;
