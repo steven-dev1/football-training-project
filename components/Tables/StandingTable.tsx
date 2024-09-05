@@ -35,9 +35,9 @@ export default function StandingTable() {
                     {sortedTeams.map((item: StandingTables) => {
                         if(item.league.season?.toLowerCase() !== 'clausura') return
                         return (
-                            <tr key={item.teamInfo.id} className='odd:bg-[#2C2C2C] py-2 px-1 rounded-lg'>
+                            <tr key={item.teamInfo.id} className='odd:bg-[#2C2C2C] py-1 px-1 rounded-lg'>
                                 <td scope='row' className={`m-1 ml-0 pl-2 text-center ${item.teamStats.position < 9 && 'text-green-500 rounded-full'} w-8 font-semibold whitespace-nowrap`}>{item.teamStats.position}</td>
-                                <td className='m-1 ml-0 px-4 flex items-center gap-2'>
+                                <td className='m-1 ml-0 px-4 py-1 flex items-center gap-2'>
                                     <LogoItem
                                         id={item.teamInfo.id}
                                         srcLogo={item.teamInfo.srcLogo}
@@ -45,8 +45,8 @@ export default function StandingTable() {
                                         orientation={'horizontal'}
                                     />
                                 </td>
-                                <td className='m-1 ml-0 py-2 px-1 '>{item.teamStats.points}</td>
-                                <td className='m-1 ml-0 py-2 px-1 '>{item.teamStats.played}</td>
+                                <td className='m-1 ml-0 py-1 px-1 '>{item.teamStats.points}</td>
+                                <td className='m-1 ml-0 py-1 px-1 '>{item.teamStats.played}</td>
                             </tr>
                         )
                     })}

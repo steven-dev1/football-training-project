@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import CardMatch from '../Cards/CardMatch/CardMatch'
 import { useCustomData } from '@/hooks/useCustomData';
 import { statusFilters } from '@/infrastructure/utils/helpers';
-import { remapFavorites, remapMatchesByLeague } from '@/infrastructure/utils/remap';
-import { Match, MatchesByLeague } from '@/types/GameData';
+import { remapMatchesByLeague } from '@/infrastructure/utils/remap';
+import { Match } from '@/types/GameData';
+import { CardMatch } from '../Cards/CardMatch/CardMatch';
 
 interface MatchesListProps {
     date: string;
@@ -27,18 +27,18 @@ export default function MatchesList({ date, status }: MatchesListProps) {
 
 
     const { data, isLoading, isError } = useCustomData(remapMatchesByLeague, queryParams);
-    if(isLoading) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Cargando...</div>
-    if(isError) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Error al cargar los partidos</div>
-    
+    if (isLoading) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Cargando...</div>
+    if (isError) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Error al cargar los partidos</div>
+
     return (
         <div className='flex flex-col gap-3 mt-3'>
             {Object.keys(data).map((leagueId) => {
                 const leagueData = data[leagueId];
                 const filteredMatches = leagueData.matches.filter(statusFilters[status]);
-                
+
                 if (filteredMatches.length === 0) return null;
                 return (
-                    <div className='bg-projectGrays-500 rounded-lg'>
+                    <div key={leagueId} className='bg-projectGrays-500 rounded-lg'>
                         <h3 className='font-semibold bg-projectGrays-500/50 border-projectGrays-300 border-b text-sm m-2 p-2'>{leagueData.league.name}</h3> {/* Nombre de la liga */}
                         <div className='flex flex-col px-2 pb-2'>
                             {filteredMatches.map((item: Match) => (
