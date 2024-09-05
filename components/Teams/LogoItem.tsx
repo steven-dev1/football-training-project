@@ -1,22 +1,37 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ItemInfo } from '@/types/GameData'
 
-export default function LogoItem({ srcLogo, name, orientation }: ItemInfo) {
+interface LogoItemProps extends ItemInfo {
+  logoPosition?: 'right' | 'left';
+}
+
+export default function LogoItem({ srcLogo, name, orientation, logoPosition }: LogoItemProps) {
+  const [error, setError] = useState(false)
+  const isVertical = orientation == 'vertical'
+  const fallbackImage = 'no-image.svg'
+
+  const containerClasses = {
+    vertical: 'flex flex-col items-center min-w-[70px] max-w-[70px] cursor-pointer',
+    horizontal: `flex gap-2 items-center ${logoPosition == 'right' ? 'justify-end' : 'justify-start'} cursor-pointer max-w-auto`
+  }
+  const verticalExtraParagraphClass = "max-w-[80px] mt-2 leading-3"
+
+  const bodyContent = [
+    <Image key={srcLogo} className={`${error && 'bg-white rounded-full'}`} src={error ? fallbackImage : srcLogo} alt={name} width={isVertical ? 50 : 20} height={isVertical ? 50 : 20} onError={()=> setError(true)}/>,
+    <p key={name} className={`${isVertical && verticalExtraParagraphClass} font-medium text-xs text-center whitespace-nowrap overflow-hidden text-ellipsis`}>
+      {name}
+    </p>
+
+  ]
+
+  useEffect(() => {
+    setError(false)
+  },[srcLogo])
+
   return (
-    orientation == "vertical" ?
-      <div className='flex flex-col items-center min-w-[70px] max-w-[70px] cursor-pointer'>
-        <Image src={srcLogo} alt={name} width={50} height={50} />
-        <p className='font-medium max-w-[80px] mt-2 text-xs text-center whitespace-nowrap leading-3 overflow-hidden text-ellipsis'>
-          {name}
-        </p>
-      </div>
-      :
-      <div className='flex gap-1 items-center cursor-pointer max-w-auto'>
-        <Image src={srcLogo} alt={name} width={20} height={20} />
-        <p className='font-medium text-xs text-center whitespace-nowrap leading-4 overflow-hidden text-ellipsis'>
-          {name}
-        </p>
-      </div>
+    <div className={isVertical ? containerClasses.vertical : containerClasses.horizontal}>
+      {isVertical || logoPosition !== 'right' ? bodyContent : bodyContent.reverse()}
+    </div>
   )
 }

@@ -1,60 +1,39 @@
 import { MatchInfo } from "@/types/GameData";
+import StatusTag from "./StatusTag";
 
 type MatchStatusProps = {
   matchInfo: MatchInfo;
   scoreHome: string;
   scoreAway: string;
-  formattedDate: string;
+  formattedDate?: string;
   localTime: string;
-  orientation: "vertical" | "horizontal"; // Nueva propiedad
+  orientation: "vertical" | "horizontal";
 };
 
 export const MatchStatus = ({ matchInfo, scoreHome, scoreAway, formattedDate, localTime, orientation }: MatchStatusProps) => {
-  const isLive = matchInfo.live == "1";
-  const isFinished = matchInfo.status === 'Finalizado';
+  const isLive = matchInfo.live === "1";
+  const isFinished = matchInfo.status === 'Finalizado' || matchInfo.status !== '';
   const isHorizontal = orientation === "horizontal";
+
+  const Score = () => (
+    <h1 className={`font-bold text-nowrap text-center ${isHorizontal ? 'text-2xl' : isFinished ? 'text-3xl' : 'text-4xl'}`}>
+      {isFinished || isLive ? `${scoreHome} - ${scoreAway}` : 'vs'}
+    </h1>
+  );
+
+  const Status = () => (
+    !isHorizontal && (
+      <StatusTag isLive={isLive} status={matchInfo.status} time={localTime} />
+    )
+  );
 
   return (
     <div className={`flex flex-col items-center ${isHorizontal ? 'w-full' : 'max-w-[70px]'}`}>
-      {isFinished ? (
-        <>
-          <h1 className={`font-bold ${isHorizontal ? 'text-2xl' : 'text-3xl'}`}>
-            {scoreHome} - {scoreAway}
-          </h1>
-          <p className='text-xs font-semibold text-nowrap text-ellipsis overflow-hidden'>
-            {matchInfo.status}
-          </p>
-          <span className='text-xs text-projectGrays-100 font-semibold text-nowrap text-ellipsis overflow-hidden'>
-            {formattedDate}
-          </span>
-        </>
-      ) : (
-        <>
-          {!isLive && (
-            <h1 className={`font-bold ${isHorizontal ? 'text-2xl' : 'text-4xl'}`}>vs</h1>
-          )}
-          {isLive && (
-            <h1 className={`font-bold ${isHorizontal ? 'text-2xl' : 'text-3xl'}`}>
-              {scoreHome} - {scoreAway}
-            </h1>
-          )}
-          {!isLive && (
-            <p className='text-xs font-semibold text-nowrap text-ellipsis overflow-hidden'>
-              {formattedDate}
-            </p>
-          )}
-          {!isLive && (
-            <span className='text-xs text-projectGrays-100 font-semibold text-nowrap text-ellipsis overflow-hidden'>
-              {localTime}
-            </span>
-          )}
-          {isLive && (
-            <p className='bg-red-700 animate-pulse font-semibold text-white p-1 rounded-lg text-xs text-center text-ellipsis overflow-hidden'>
-              {matchInfo.status}
-            </p>
-          )}
-        </>
-      )}
+      <Score />
+      <Status />
+      {!isLive && !isHorizontal && <p className='text-xs text-projectGrays-100 font-medium text-nowrap text-ellipsis overflow-hidden'>
+        {formattedDate}
+      </p>}
     </div>
   );
 };

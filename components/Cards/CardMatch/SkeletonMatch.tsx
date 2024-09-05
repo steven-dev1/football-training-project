@@ -1,4 +1,4 @@
-import { SkeletonLogoItem } from "../Teams/SkeletonLogoItem";
+import { SkeletonLogoItem } from "../../Teams/SkeletonLogoItem";
 
 const SkeletonMatchCard = () => {
     return (

@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo } from 'react'
-import CardMatch from '../Cards/CardMatch/CardMatch'
-import { RemapFunctionType, RemappedDataType } from '@/types/GameData'
+import React, { useMemo } from 'react'
 import { useCustomData } from '@/hooks/useCustomData';
-import { statusFilters } from '@/utils/helpers';
+import { statusFilters } from '@/infrastructure/utils/helpers';
+import { remapMatchesByLeague } from '@/infrastructure/utils/remap';
+import { Match } from '@/types/GameData';
+import { CardMatch } from '../Cards/CardMatch/CardMatch';
 
 interface MatchesListProps {
     date: string;
@@ -25,59 +26,27 @@ export default function MatchesList({ date, status }: MatchesListProps) {
     }, [date, status]);
 
 
-    const remapFunction: RemapFunctionType = useCallback((data) => {
-        return data.map(item => ({
-            matchInfo: {
-                date: item.match_date,
-                time: item.match_time,
-                league: item.league_name,
-                logo: item.league_logo,
-                status: item.match_status,
-                id: item.match_id,
-                live: item.match_live
-            },
-            teamHome: {
-                name: item.match_hometeam_name,
-                srcLogo: item.team_home_badge,
-                score: item.match_hometeam_score,
-            },
-            teamAway: {
-                name: item.match_awayteam_name,
-                srcLogo: item.team_away_badge,
-                score: item.match_awayteam_score,
-            }
-        }));
-    }, []);
-    const { data, isLoading, isError } = useCustomData(remapFunction, queryParams);
-
-    const matchesByLeague = data?.reduce((acc: Record<string, RemappedDataType[]>, match: RemappedDataType) => {
-        const leagueName = match.matchInfo.league;
-        if (!acc[leagueName]) {
-            acc[leagueName] = [];
-        }
-        acc[leagueName].push(match);
-        return acc;
-    }, {});
+    const { data, isLoading, isError } = useCustomData(remapMatchesByLeague, queryParams);
+    if (isLoading) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Cargando...</div>
+    if (isError) return <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Error al cargar los partidos</div>
 
     return (
         <div className='flex flex-col gap-3 mt-3'>
-            {matchesByLeague && Object.keys(matchesByLeague).map((leagueName) => {
-                const filteredMatches = matchesByLeague[leagueName].filter(statusFilters[status]);
+            {Object.keys(data).map((leagueId) => {
+                const leagueData = data[leagueId];
+                const filteredMatches = leagueData.matches.filter(statusFilters[status]);
 
-                if (!leagueName || filteredMatches.length === 0) {
-                    return null; 
-                }
-
+                if (filteredMatches.length === 0) return null;
                 return (
-                    <div key={leagueName} className='bg-projectGrays-500 rounded-lg'>
-                        <h3 className='font-semibold bg-projectGrays-500/50 border-projectGrays-300 border-b text-sm m-2 p-2'>{leagueName}</h3> {/* Nombre de la liga */}
+                    <div key={leagueId} className='bg-projectGrays-500 rounded-lg'>
+                        <h3 className='font-semibold bg-projectGrays-500/50 border-projectGrays-300 border-b text-sm m-2 p-2'>{leagueData.league.name}</h3> {/* Nombre de la liga */}
                         <div className='flex flex-col px-2 pb-2'>
-                            {filteredMatches.map((match: RemappedDataType) => (
+                            {filteredMatches.map((item: Match) => (
                                 <CardMatch
-                                    key={match.matchInfo.id}
-                                    matchInfo={match.matchInfo}
-                                    teamHome={match.teamHome}
-                                    teamAway={match.teamAway}
+                                    key={item.matchInfo.id}
+                                    matchInfo={item.matchInfo}
+                                    teamHome={item.teamHome}
+                                    teamAway={item.teamAway}
                                     orientation='horizontal'
                                 />
                             ))}
@@ -85,9 +54,6 @@ export default function MatchesList({ date, status }: MatchesListProps) {
                     </div>
                 );
             })}
-
-            {isLoading && <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Cargando...</div>}
-            {isError && <div className='flex justify-center text-sm font-semibold my-2 items-center h-full'>Error al cargar los partidos</div>}
         </div>
     );
 }

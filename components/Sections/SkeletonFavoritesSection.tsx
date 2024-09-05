@@ -1,5 +1,5 @@
 import React from 'react'
-import SkeletonMatchCard from '../Cards/SkeletonMatchFinished'
+import SkeletonMatchCard from '../Cards/CardMatch/SkeletonMatch'
 
 export default function SkeletonFavoritesSection() {
     return (

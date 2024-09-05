@@ -20,7 +20,7 @@ export const convertTimeToLocal = (timeString: string, timeZone: string): string
   const [hours, minutes] = timeString.split(':').map(Number);
 
   // Suponiendo que la hora es en UTC (o ajustable)
-  const utcDate = new Date(Date.UTC(2024, 7, 29, hours - 2, minutes)); // Añadir cualquier fecha válida
+  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); // Añadir cualquier fecha válida
 
   // Convertir a la hora local usando Intl.DateTimeFormat
   return new Intl.DateTimeFormat('en-US', {
@@ -64,7 +64,7 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
 export const statusFilters: Record<number, (match: any) => boolean> = {
   0: () => true, // Mostrar todos los partidos
   1: (match: any) => match.matchInfo.live === '1', // Mostrar partidos en vivo
-  2: (match: any) => match.matchInfo.status === '', // Mostrar partidos próximos
-  3: (match: any) => match.matchInfo.status === 'Finalizado', // Mostrar partidos terminados
+  2: (match: any) => match.matchInfo.status === '' || match.matchInfo.status === 'Postponed' , // Mostrar partidos próximos
+  3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0', // Mostrar partidos terminados
 };
 
