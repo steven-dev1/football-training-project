@@ -1,4 +1,5 @@
-import { CountriesWithLeagues } from "@/types/GameData";
+
+import { CountriesWithLeagues, ItemInfo, Match, MatchInfo } from "@/types/GameData";
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -16,13 +17,10 @@ export const formatDate = (dateString: string): string => {
 
 export const convertTimeToLocal = (timeString: string, timeZone: string): string => {
   if (!timeString || !timeZone) return '00:00'
-  // Crear una fecha ficticia añadiendo la hora
   const [hours, minutes] = timeString.split(':').map(Number);
 
-  // Suponiendo que la hora es en UTC (o ajustable)
-  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); // Añadir cualquier fecha válida
+  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); 
 
-  // Convertir a la hora local usando Intl.DateTimeFormat
   return new Intl.DateTimeFormat('en-US', {
     timeZone,
     hour: '2-digit',
@@ -34,7 +32,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
   const grouped = items.reduce((acc: Record<number, CountriesWithLeagues>, item: any) => {
     const countryId = item.country_id;
 
-    // Si el país ya existe en el acumulador, le agregamos la nueva liga
     if (!acc[countryId]) {
       acc[countryId] = {
         country: {
@@ -46,7 +43,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
       };
     }
 
-    // Agregar la liga correspondiente al país
     acc[countryId].leagues.push({
       id: item.league_id,
       name: item.league_name,
@@ -56,7 +52,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
     return acc;
   }, {} as Record<number, CountriesWithLeagues>);
 
-  // Convertir el objeto agrupado en un array
   return Object.values(grouped);
 };
 
@@ -66,5 +61,27 @@ export const statusFilters: Record<number, (match: any) => boolean> = {
   1: (match: any) => match.matchInfo.live === '1', // Mostrar partidos en vivo
   2: (match: any) => match.matchInfo.status === '' || match.matchInfo.status === 'Postponed' , // Mostrar partidos próximos
   3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0', // Mostrar partidos terminados
+};
+
+export const addFavorites = (matchInfo: MatchInfo, teamHome: ItemInfo, teamAway: ItemInfo): any => {
+  const storedMatches = window.localStorage.getItem('FavoritesMatch');
+  const favorites = storedMatches ? JSON.parse(storedMatches) : [];
+
+  const newMatch = {
+    matchInfo,
+    teamHome,
+    teamAway,
+  };
+
+  favorites.push(newMatch);
+  window.localStorage.setItem('FavoritesMatch', JSON.stringify(favorites));
+};
+
+export const removeFavorites = (matchId: string): void => {
+  const storedMatches = window.localStorage.getItem('FavoritesMatch')
+  const favorites = storedMatches ? JSON.parse(storedMatches) : []
+  if(favorites.length == 0) return
+  const updatedFavorites = favorites.filter((match: Match) => match.matchInfo.id!== matchId);
+  window.localStorage.setItem('FavoritesMatch', JSON.stringify(updatedFavorites));
 };
 
