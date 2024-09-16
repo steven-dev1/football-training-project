@@ -1,5 +1,6 @@
 
-import { CountriesWithLeagues, ItemInfo, Match, MatchInfo } from "@/types/GameData";
+import { supabase } from "@/supabase/client";
+import { CountriesWithLeagues } from "@/types/GameData";
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -63,25 +64,23 @@ export const statusFilters: Record<number, (match: any) => boolean> = {
   3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0', // Mostrar partidos terminados
 };
 
-export const addFavorites = (matchInfo: MatchInfo, teamHome: ItemInfo, teamAway: ItemInfo): any => {
-  const storedMatches = window.localStorage.getItem('FavoritesMatch');
-  const favorites = storedMatches ? JSON.parse(storedMatches) : [];
+export const getFavoriteMatches = async (sessionId: string) => {
+  const { data, error } = await supabase
+    .from('favorites')
+    .select('match_id')
+    .eq('session_id', sessionId);
 
-  const newMatch = {
-    matchInfo,
-    teamHome,
-    teamAway,
-  };
-
-  favorites.push(newMatch);
-  window.localStorage.setItem('FavoritesMatch', JSON.stringify(favorites));
+  if (error) {
+    console.error('Error fetching favorite matches:', error);
+    return [];
+  }
+  return data;
 };
 
-export const removeFavorites = (matchId: string): void => {
-  const storedMatches = window.localStorage.getItem('FavoritesMatch')
-  const favorites = storedMatches ? JSON.parse(storedMatches) : []
-  if(favorites.length == 0) return
-  const updatedFavorites = favorites.filter((match: Match) => match.matchInfo.id!== matchId);
-  window.localStorage.setItem('FavoritesMatch', JSON.stringify(updatedFavorites));
-};
 
+export const httpPostActions = {
+  "GET": "getFavorites",
+  "POST": "insertFavorite",
+  "PUT": "updateFavorite",
+  "DELETE": "deleteFavorite"
+}
