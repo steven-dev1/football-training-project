@@ -19,11 +19,8 @@ export async function POST(req: Request) {
     if (!sessionId) {
         return NextResponse.json({ error: 'Missing sessionId' }, { status: 400 });
     }
-
-    // Determinar la lógica a seguir basándote en 'action'
     try {
-        if (action === httpPostActions.GET) {
-            // Lógica para obtener favoritos
+        if (action === httpPostActions.GET_FAVORITES) {
             const { data, error } = await supabase
                 .from('favorites')
                 .select('match_id')
@@ -39,7 +36,6 @@ export async function POST(req: Request) {
                     const res = await fetch(
                         `https://apiv3.apifootball.com/?action=get_events&from=${formattedFiveDaysAgo}&to=${formattedToday}&match_id=${match_id}&APIkey=${apiKey}`
                     );
-
                     if (!res.ok) {
                         throw new Error(`Error fetching match details: ${res.status} ${res.statusText}`);
                     }
@@ -52,12 +48,11 @@ export async function POST(req: Request) {
                     }
                 })
             );
-
             const flattenedResponses = responses.flat();
             const remappedFavorites = remapFavorites(flattenedResponses);
 
             return NextResponse.json(remappedFavorites, { status: 200 });
-        } else if (action === httpPostActions.POST) {
+        } else if (action === httpPostActions.POST_FAVORITES) {
             const { data, error } = await supabase
                 .from('favorites')
                 .select('match_id')
@@ -95,26 +90,3 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }
-
-
-
-// export async function POST(req: Request) {
-//     const body = await req.json();
-//     const { sessionId, matchId } = body;
-
-//     if (!sessionId) {
-//         return NextResponse.json({ error: 'Missing sessionId' }, { status: 400 });
-//     } else if (!matchId) {
-//         return NextResponse.json({ error: 'Missing matchId' }, { status: 400 });
-//     }
-
-//     const { error } = await supabase
-//         .from('favorites')
-//         .insert([{ session_id: sessionId, match_id: matchId }]);
-
-//     if (error) {
-//         return NextResponse.json({ error: error.message }, { status: 500 });
-//     }
-
-//     return NextResponse.json({ message: 'Favorite added successfully' }, { status: 200 });
-// }

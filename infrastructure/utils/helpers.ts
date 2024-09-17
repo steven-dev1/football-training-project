@@ -2,6 +2,8 @@
 import { supabase } from "@/supabase/client";
 import { CountriesWithLeagues } from "@/types/GameData";
 
+export const MAXIMUN_WAITING_TIME = 40000;
+
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const months = [
@@ -13,7 +15,7 @@ export const formatDate = (dateString: string): string => {
   const month = months[date.getMonth()];
   const year = date.getFullYear();
 
-  return `${day} ${month} ${year}`;
+  return `${day+1} ${month} ${year}`;
 };
 
 export const convertTimeToLocal = (timeString: string, timeZone: string): string => {
@@ -79,8 +81,8 @@ export const getFavoriteMatches = async (sessionId: string) => {
 
 
 export const httpPostActions = {
-  "GET": "getFavorites",
-  "POST": "insertFavorite",
-  "PUT": "updateFavorite",
-  "DELETE": "deleteFavorite"
+  "GET_FAVORITES": "getFavorites",
+  "POST_FAVORITES": "insertFavorite",
+  "PUT_FAVORITES": "updateFavorite",
+  "DELETE_FAVORITES": "deleteFavorite"
 }

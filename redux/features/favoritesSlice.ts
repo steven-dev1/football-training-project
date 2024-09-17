@@ -15,18 +15,18 @@ export const favoritesSlice = createSlice({
         addFavorite: (state, action: PayloadAction<string>) => {
             if (!state.favorites.includes(action.payload)) {
                 state.favorites.push(action.payload);
-                console.log(action)
+                console.log('Estado: ' + state.favorites + ' favorite: ' + action.payload);
             }
         },
         removeFavorite: (state, action: PayloadAction<string>) => {
             state.favorites = state.favorites.filter(id => id !== action.payload);
         },
-        initializeFavorites: (state, action: PayloadAction<string[]>) => {
+        listFavorites: (state, action: PayloadAction<string[]>) => {
             state.favorites = action.payload;
             console.log(state.favorites)
         }
     },
 });
 
-export const { addFavorite, removeFavorite, initializeFavorites } = favoritesSlice.actions;
+export const { addFavorite, removeFavorite, listFavorites } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

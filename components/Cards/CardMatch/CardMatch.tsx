@@ -4,10 +4,10 @@ import { MatchStatus } from "./MatchStatus";
 import { ItemInfo, MatchInfo } from "@/types/GameData";
 import StatusTag from "./StatusTag";
 import { BsStar, BsStarFill } from "react-icons/bs";
-import { convertTimeToLocal, formatDate, httpPostActions } from "@/infrastructure/utils/helpers";
+import { convertTimeToLocal, formatDate } from "@/infrastructure/utils/helpers";
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addFavorite, removeFavorite } from "@/redux/features/favoritesSlice";
+import { addFavorite, listFavorites, removeFavorite } from "@/redux/features/favoritesSlice";
 import { handleAddFavorite } from "@/infrastructure/utils/fetchers";
 
 interface MatchProps {
@@ -17,77 +17,57 @@ interface MatchProps {
   orientation: 'vertical' | 'horizontal'
 }
 
-
 export const CardMatch = ({ matchInfo, teamHome, teamAway, orientation }: MatchProps) => {
-  const [favorite, setFavorites] = useState(false);
+  const [favorite, setFavorite] = useState(false);
   const favorites = useAppSelector((state) => state.favoriteStates.favorites);
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const sessionId = localStorage.getItem('sessionId') || '';
 
-  const handleInsertFavorites = () => {
-    try {
-      handleAddFavorite(matchInfo.id, sessionId);
-      dispatch(addFavorite(matchInfo.id));
-    } catch (err) {
-      console.error('Error adding favorite:', err);
-    }
-  }
-
   useEffect(() => {
-    setFavorites(favorites.some(((match) => match === matchInfo.id)));
+    setFavorite(favorites.includes(matchInfo.id));
   }, [favorites]);
 
+  const handleFavoriteToggle = async () => {
+    if (favorite) {
+      dispatch(removeFavorite(matchInfo.id));
+    } else {
+      try {
+        const response = await handleAddFavorite(matchInfo.id, sessionId);
+        if(response) {
+          dispatch(addFavorite(matchInfo.id));
+        }
+      } catch (err) {
+        console.error('Error toggling favorite:', err);
+      }
+    }
+  };
+
   const isHorizontal = orientation === 'horizontal';
-  const isLive = matchInfo.live === '1';
-  const formattedDate = formatDate(matchInfo.date);
   const localTime = convertTimeToLocal(matchInfo.time, 'America/Bogota');
   const status = matchInfo.status === 'Finished' ? 'Finalizado' : matchInfo.status === 'Postponed' ? 'Pospuesto' : matchInfo.status;
 
-  const handleRemoveFavorite = () => {
-    dispatch(removeFavorite(matchInfo.id));
-  };
-
   return (
-    <article className={`relative group rounded-lg w-full cursor-pointer ${isHorizontal ? 'flex items-center gap-2 justify-between group hover:bg-projectGrays-300 bg-projectGrays-500 px-3 py-2' : 'flex flex-col items-center hover:bg-projectGrays-300/40 border-[1px] border-projectGrays-300 p-3 gap-4'}`}>
-      {!isHorizontal && <div className="absolute top-0 right-0">
-        {!favorite ? <>
-          <button className="p-2 opacity-0 group-hover:opacity-100"><BsStar /></button>
-          <button onClick={handleInsertFavorites} className="absolute p-2 top-0 left-0 opacity-0 hover:opacity-100"><BsStarFill /></button>
-        </> :
-          <button onClick={handleRemoveFavorite} className="opacity-0 p-2 group-hover:opacity-100"><BsStarFill /></button>}
-      </div>
-      }
+    <article className={`relative group rounded-lg w-full cursor-pointer ${isHorizontal ? 'flex items-center gap-2 justify-between bg-projectGrays-500 px-3 py-2' : 'flex flex-col items-center border border-projectGrays-300 p-3 gap-4'}`}>
       {isHorizontal ? (
         <>
-          <div className='max-w-[13%] min-w-[13%]'><StatusTag isLive={isLive} status={status} time={localTime} /></div>
-          <div className='text-projectGrays-100'>|</div>
+          <div className="w-[13%] max-w-[13%]"><StatusTag isLive={matchInfo.live === '1'} status={status} time={localTime} /></div>
+          <div className="text-projectGrays-100">|</div>
         </>
       ) : (
-        <span className='font-medium text-projectGrays-100 w-full text-center text-xs whitespace-nowrap overflow-hidden text-ellipsis'>{matchInfo.league}</span>
+        <span className="font-medium text-xs text-projectGrays-100 text-center">{matchInfo.league}</span>
       )}
 
       <div className={`w-full flex justify-evenly ${isHorizontal ? 'items-center' : 'items-start gap-6'}`}>
-        <div className={`${isHorizontal ? 'w-[25%] justify-end' : ''}`}>
-          <LogoItem {...teamHome} orientation={orientation} logoPosition="right" />
-        </div>
-        <div className='flex flex-col items-center w-[30%]'>
-          <MatchStatus matchInfo={matchInfo} scoreHome={teamHome.score ?? '-'} scoreAway={teamAway.score ?? '-'} formattedDate={formattedDate} localTime={localTime} orientation={orientation} />
-        </div>
-        <div className={`${isHorizontal ? 'w-[25%] justify-start' : ''}`}>
-          <LogoItem {...teamAway} orientation={orientation} logoPosition="left" />
-        </div>
+        <div className={`${isHorizontal ? 'w-[25%] justify-end' : ''}`}><LogoItem {...teamHome} orientation={orientation} logoPosition="right" /></div>
+        <div className="flex flex-col items-center w-[30%]"><MatchStatus matchInfo={matchInfo} scoreHome={teamHome.score ?? '-'} scoreAway={teamAway.score ?? '-'} formattedDate={formatDate(matchInfo.date)} localTime={localTime} orientation={orientation} /></div>
+        <div className={`${isHorizontal ? 'w-[25%] justify-start' : ''}`}><LogoItem {...teamAway} orientation={orientation} logoPosition="left" /></div>
       </div>
-
-      {isHorizontal && (
-        <div className="relative">
-          {!favorite ? <>
-            <button className="opacity-0 p-2 group-hover:opacity-100"><BsStar /></button>
-            <button onClick={handleInsertFavorites} className="absolute p-2 top-0 left-0 opacity-0 hover:opacity-100"><BsStarFill /></button>
-          </> :
-            <button onClick={handleRemoveFavorite} className="opacity-100 p-2 group-hover:opacity-100"><BsStarFill /></button>}
-
-        </div>
-      )}
+      <div className={`${isHorizontal ? 'flex items-center' : 'absolute top-0 right-0'} ${favorite ? '': 'opacity-0 group-hover:opacity-100'}`}>
+        <button onClick={handleFavoriteToggle} className="p-2">
+          {favorite ? <BsStarFill /> : <BsStar />}
+        </button>
+      </div>
     </article>
   );
 };
+
