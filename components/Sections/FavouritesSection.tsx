@@ -25,9 +25,12 @@ export default function FavoritesSection() {
             if (data?.length > 0) {
                 setFavorites(data);
                 const favoriteIds = data.map((fav: Match) => fav.matchInfo.id); 
+
                 if (JSON.stringify(favoriteIds) !== JSON.stringify(stateFavorites)) {
                     dispatch(listFavorites(favoriteIds));
                 }
+            } else {
+                setFavorites([]);
             }
         } catch (error) {
             console.error('Error fetching favorites:', error);
