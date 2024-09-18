@@ -7,8 +7,8 @@ import { BsStar, BsStarFill } from "react-icons/bs";
 import { convertTimeToLocal, formatDate } from "@/infrastructure/utils/helpers";
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { addFavorite, listFavorites, removeFavorite } from "@/redux/features/favoritesSlice";
-import { handleAddFavorite } from "@/infrastructure/utils/fetchers";
+import { addFavorite,removeFavorite } from "@/redux/features/favoritesSlice";
+import { handleAddFavorite, handleRemoveFavorite } from "@/infrastructure/utils/fetchers";
 
 interface MatchProps {
   matchInfo: MatchInfo,
@@ -29,7 +29,10 @@ export const CardMatch = ({ matchInfo, teamHome, teamAway, orientation }: MatchP
 
   const handleFavoriteToggle = async () => {
     if (favorite) {
-      dispatch(removeFavorite(matchInfo.id));
+      const response = await handleRemoveFavorite(matchInfo.id, sessionId);
+      if(response) {
+        dispatch(removeFavorite(matchInfo.id));
+      }
     } else {
       try {
         const response = await handleAddFavorite(matchInfo.id, sessionId);

@@ -9,40 +9,34 @@ import { fetchFavorites } from '@/infrastructure/utils/fetchers';
 import { createSession } from '@/supabase/client';
 
 export default function FavoritesSection() {
-    const stateFavorites = useAppSelector((state) => state.favoriteStates.favorites)
+    const stateFavorites = useAppSelector((state) => state.favoriteStates.favorites);
     const dispatch = useAppDispatch();
-    const [favorites, setFavorites] = useState<Match[]>([])
+    const [favorites, setFavorites] = useState<Match[]>([]);
 
     const dataFetching = async () => {
-        const sessionId = localStorage.getItem('sessionId');
-        if (!sessionId) {
-            await createSession();
-            return;
-        }
-        const data = await fetchFavorites(sessionId);
-        if (data?.length > 0) {
-            setFavorites(data);
-            console.log('Data: ', data)
-        }
-    }
-    useEffect(() => {
-        const initializeSession = async () => {
-            try {
-                await dataFetching()
-                console.log('Favorites: ', favorites)
-                const favoriteIds = favorites.map((fav: Match) => fav.matchInfo.id);
-                dispatch(listFavorites(favoriteIds));
-            } catch (error) {
-                console.error('Error fetching favorites:', error);
+        try {
+            const sessionId = localStorage.getItem('sessionId');
+            if (!sessionId) {
+                createSession();
+                return;
             }
-        };
-        initializeSession();
-    }, []);
+
+            const data = await fetchFavorites(sessionId);
+            if (data?.length > 0) {
+                setFavorites(data);
+                const favoriteIds = data.map((fav: Match) => fav.matchInfo.id); 
+                if (JSON.stringify(favoriteIds) !== JSON.stringify(stateFavorites)) {
+                    dispatch(listFavorites(favoriteIds));
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching favorites:', error);
+        }
+    };
 
     useEffect(() => {
-        // dispatch(listFavorites(favorites.map((favoriteMatch: Match) => favoriteMatch.matchInfo.id)))
-        console.log(stateFavorites);
-    }, [favorites]);
+        dataFetching(); 
+    }, [stateFavorites]);
 
     return (
         <section className='w-full'>

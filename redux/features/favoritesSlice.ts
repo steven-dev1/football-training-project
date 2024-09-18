@@ -15,7 +15,6 @@ export const favoritesSlice = createSlice({
         addFavorite: (state, action: PayloadAction<string>) => {
             if (!state.favorites.includes(action.payload)) {
                 state.favorites.push(action.payload);
-                console.log('Estado: ' + state.favorites + ' favorite: ' + action.payload);
             }
         },
         removeFavorite: (state, action: PayloadAction<string>) => {

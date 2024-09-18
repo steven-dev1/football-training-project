@@ -58,3 +58,29 @@ export const handleAddFavorite = async (id: string, sessionId: string) => {
   }
   return false;
 };
+
+export const handleRemoveFavorite = async (id: string, sessionId: string) => {
+  if (!sessionId) {
+    console.error('No session found');
+    return false;
+  }
+  try {
+    const response = await fetch(`/api/favorites`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 'match_id': id, sessionId, 'action': httpPostActions.DELETE_FAVORITES }),
+    });
+    if (!response.ok) {
+      console.error(`Error en la respuesta de la API:`, response);
+    }
+    const data = await response?.json();
+    console.log(data)
+    return Boolean(data)
+  } catch (err) {
+    alert('Error en la API');
+    console.log(err);
+  }
+  return false;
+}

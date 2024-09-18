@@ -78,7 +78,25 @@ export async function POST(req: Request) {
                 }
             }
             return NextResponse.json({ message: 'Se guardó correctamente.' }, { status: 200 });
-        } else {
+        } else if (action === httpPostActions.DELETE_FAVORITES) {
+            const { data, error } = await supabase
+                .from('favorites')
+                .delete()
+                .eq('session_id', sessionId)
+                .eq('match_id', match_id);
+
+                console.log(data)
+
+            if (error) {
+                console.error('Error deleting favorite match:', error.message);
+                return NextResponse.json({ error: 'Error deleting favorite match: ' + error.message }, { status: 500 });
+            } else if (data) {
+                return NextResponse.json({ message: 'Match deleted successfully' }, { status: 200 });
+            }
+
+            return NextResponse.json({ message: 'Se elimino correctamente.' }, { status: 200 });
+        }
+        else {
             return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
         }
     } catch (error) {
