@@ -1,4 +1,8 @@
+
+import { supabase } from "@/supabase/client";
 import { CountriesWithLeagues } from "@/types/GameData";
+
+export const MAXIMUN_WAITING_TIME = 40000;
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -11,18 +15,15 @@ export const formatDate = (dateString: string): string => {
   const month = months[date.getMonth()];
   const year = date.getFullYear();
 
-  return `${day} ${month} ${year}`;
+  return `${day+1} ${month} ${year}`;
 };
 
 export const convertTimeToLocal = (timeString: string, timeZone: string): string => {
   if (!timeString || !timeZone) return '00:00'
-  // Crear una fecha ficticia añadiendo la hora
   const [hours, minutes] = timeString.split(':').map(Number);
 
-  // Suponiendo que la hora es en UTC (o ajustable)
-  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); // Añadir cualquier fecha válida
+  const utcDate = new Date(Date.UTC(2024, 7, 29, (hours || 0) - 2, minutes || 0)); 
 
-  // Convertir a la hora local usando Intl.DateTimeFormat
   return new Intl.DateTimeFormat('en-US', {
     timeZone,
     hour: '2-digit',
@@ -34,7 +35,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
   const grouped = items.reduce((acc: Record<number, CountriesWithLeagues>, item: any) => {
     const countryId = item.country_id;
 
-    // Si el país ya existe en el acumulador, le agregamos la nueva liga
     if (!acc[countryId]) {
       acc[countryId] = {
         country: {
@@ -46,7 +46,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
       };
     }
 
-    // Agregar la liga correspondiente al país
     acc[countryId].leagues.push({
       id: item.league_id,
       name: item.league_name,
@@ -56,7 +55,6 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
     return acc;
   }, {} as Record<number, CountriesWithLeagues>);
 
-  // Convertir el objeto agrupado en un array
   return Object.values(grouped);
 };
 
@@ -68,3 +66,23 @@ export const statusFilters: Record<number, (match: any) => boolean> = {
   3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0', // Mostrar partidos terminados
 };
 
+export const getFavoriteMatches = async (sessionId: string) => {
+  const { data, error } = await supabase
+    .from('favorites')
+    .select('match_id')
+    .eq('session_id', sessionId);
+
+  if (error) {
+    console.error('Error fetching favorite matches:', error);
+    return [];
+  }
+  return data;
+};
+
+
+export const httpPostActions = {
+  "GET_FAVORITES": "getFavorites",
+  "POST_FAVORITES": "insertFavorite",
+  "PUT_FAVORITES": "updateFavorite",
+  "DELETE_FAVORITES": "deleteFavorite"
+}

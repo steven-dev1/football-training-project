@@ -3,6 +3,7 @@ import StandingTable from '@/components/Tables/StandingTable';
 import LeftNav from '@/components/Navs/LeftNav';
 import FavoritesSection from '@/components/Sections/FavouritesSection';
 import MatchesSection from '@/components/Sections/MatchesSection';
+
 export default function Home() {
 
   return (
