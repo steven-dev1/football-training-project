@@ -36,7 +36,7 @@ export default function MatchesList({ date, status }: MatchesListProps) {
                 const leagueData = data[leagueId];
                 const filteredMatches = leagueData.matches.filter(statusFilters[status]);
 
-                if (filteredMatches.length === 0) return null;
+                if (filteredMatches.length === 0) return;
                 return (
                     <div key={leagueId} className='bg-projectGrays-500 rounded-lg'>
                         <h3 className='font-semibold bg-projectGrays-500/50 border-projectGrays-300 border-b text-sm m-2 p-2'>{leagueData.league.name}</h3> {/* Nombre de la liga */}

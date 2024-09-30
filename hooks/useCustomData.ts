@@ -1,6 +1,5 @@
 import useSWR from 'swr';
 import { customFetcher } from '@/infrastructure/utils/fetchers';
-import { useCallback } from 'react';
 
 
 // Hook para usar SWR con el custom fetcher

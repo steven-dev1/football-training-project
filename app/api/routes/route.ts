@@ -14,9 +14,8 @@ export async function GET(req: NextRequest) {
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), MAXIMUN_WAITING_TIME); 
-
-    const response = await fetch(url, { signal: controller.signal });
-
+    const response = await fetch(url);
+    
     clearTimeout(timeout);
 
     if (!response.ok) {

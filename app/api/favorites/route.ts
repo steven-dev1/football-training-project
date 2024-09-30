@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/supabase/client';
 import { remapFavorites } from '@/infrastructure/utils/remap';
 import { httpPostActions } from '@/infrastructure/utils/helpers';
+import apiClient from '@/interceptors/axios.interceptors';
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY_FOOTBALL;
 
@@ -33,19 +34,13 @@ export async function POST(req: Request) {
 
             const responses = await Promise.all(
                 data.map(async ({ match_id }) => {
-                    const res = await fetch(
+                    const res = await apiClient.get(
                         `https://apiv3.apifootball.com/?action=get_events&from=${formattedFiveDaysAgo}&to=${formattedToday}&match_id=${match_id}&APIkey=${apiKey}`
                     );
-                    if (!res.ok) {
+                    if (res.status !== 200) {
                         throw new Error(`Error fetching match details: ${res.status} ${res.statusText}`);
                     }
-                    const contentType = res.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        return res.json();
-                    } else {
-                        const text = await res.text();
-                        throw new Error(`Received non-JSON response: ${text}`);
-                    }
+                    return res.data
                 })
             );
             const flattenedResponses = responses.flat();
