@@ -3,8 +3,8 @@ import { httpPostActions } from "./helpers";
 
 
 export const customFetcher = async (url: string, remapFunction: Function) => {
-  const response = await fetch(url);
-  const data = await response?.json();
+  const response = await apiClient.get(url);
+  const data = await response?.data;
   const remappedData = remapFunction ? remapFunction(data) : data;
 
   return remappedData;
