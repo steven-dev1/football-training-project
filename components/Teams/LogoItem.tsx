@@ -9,7 +9,8 @@ interface LogoItemProps extends ItemInfo {
 export default function LogoItem({ srcLogo, name, orientation, logoPosition }: LogoItemProps) {
   const [error, setError] = useState(false)
   const isVertical = orientation == 'vertical'
-  const fallbackImage = 'no-image.svg'
+  const fallbackImage = '/no-image.svg'
+  const validSrcLogo = srcLogo || fallbackImage;
 
   const containerClasses = {
     vertical: 'flex flex-col items-center min-w-[70px] max-w-[70px] cursor-pointer',
@@ -18,7 +19,7 @@ export default function LogoItem({ srcLogo, name, orientation, logoPosition }: L
   const verticalExtraParagraphClass = "max-w-[80px] mt-2 leading-3"
 
   const bodyContent = [
-    <Image key={srcLogo} className={`${error && 'bg-white rounded-full'}`} src={error ? fallbackImage : srcLogo} alt={name} width={isVertical ? 50 : 20} height={isVertical ? 50 : 20} onError={()=> setError(true)}/>,
+    <Image key={validSrcLogo} className={`${error || !srcLogo ? 'bg-white rounded-full' : ''}`} src={error ? fallbackImage : validSrcLogo} alt={name} width={isVertical ? 50 : 20} height={isVertical ? 50 : 20} onError={()=> setError(true)}/>,
     <p key={name} className={`${isVertical && verticalExtraParagraphClass} font-medium text-xs text-center whitespace-nowrap overflow-hidden text-ellipsis`}>
       {name}
     </p>

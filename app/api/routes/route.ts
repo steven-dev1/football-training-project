@@ -1,4 +1,5 @@
 import { MAXIMUN_WAITING_TIME } from '@/infrastructure/utils/helpers';
+import apiClient from '@/interceptors/axios.interceptors';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
@@ -14,16 +15,15 @@ export async function GET(req: NextRequest) {
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), MAXIMUN_WAITING_TIME); 
-
-    const response = await fetch(url, { signal: controller.signal });
-
+    const response = await apiClient.get(url);
+    
     clearTimeout(timeout);
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       throw new Error(`Failed to fetch data: ${response.status}`);
     }
 
-    const data = await response.json();
+    const data = await response.data;
     return NextResponse.json(data);
 
   } catch (error: unknown) {
