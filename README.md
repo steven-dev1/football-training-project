@@ -173,6 +173,5 @@ export default function LogoItem({ srcLogo, name, orientation, logoPosition, hre
 ```
 
 Se manejan y controlan los errores o imagenes corruptas que puedan llegar desde la API.
-
 ------------
 El proyecto no solo tiene una base solida para el seguimiento de eventos deportivos en tiempo real, sino que tambien esta preparado para futuras expansiones, como la integración de nuevas funcionalidades, autenticación de usuarios y mejoras en la personalización de contenido.
