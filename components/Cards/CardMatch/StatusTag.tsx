@@ -7,6 +7,9 @@ interface StatusTagProps {
 }
 
 export default function StatusTag({ status, isLive, time}: StatusTagProps ) {
+    if(status === 'Postponed') {
+        status = 'Pendiente'
+    }
     const liveStatus = !Number(status) && isLive ? status : "Min "+status+"'"
     const isFinished = status !== ""
     const TagClasses = {

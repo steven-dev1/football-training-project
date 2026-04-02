@@ -11,11 +11,13 @@ type MatchStatusProps = {
 };
 
 export const MatchStatus = ({ matchInfo, scoreHome, scoreAway, formattedDate, localTime, orientation }: MatchStatusProps) => {
-  const isLive = matchInfo.live === "1";
-  const isFinished = matchInfo.status === 'Finalizado' || matchInfo.status !== '';
-  const isHorizontal = orientation === "horizontal";
+  const isLive: boolean = matchInfo.live === "1";
+  if(matchInfo.status === 'Finished') matchInfo.status = 'Finalizado'
+  const isFinished: boolean = matchInfo.status === 'Finalizado' || matchInfo.status !== '';
+  const isHorizontal: boolean = orientation === "horizontal";
+  
 
-  const Score = () => (
+  const Score = ():React.ReactNode => (
     <h1 className={`font-bold text-nowrap text-center ${isHorizontal ? 'text-2xl' : isFinished ? 'text-3xl' : 'text-4xl'}`}>
       {isFinished || isLive ? `${scoreHome} - ${scoreAway}` : 'vs'}
     </h1>

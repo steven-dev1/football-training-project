@@ -1,6 +1,6 @@
 
 import { supabase } from "@/supabase/client";
-import { CountriesWithLeagues } from "@/types/GameData";
+import { CountriesWithLeagues, Scorers } from "@/types/GameData";
 
 export const MAXIMUN_WAITING_TIME = 40000;
 
@@ -15,7 +15,7 @@ export const formatDate = (dateString: string): string => {
   const month = months[date.getMonth()];
   const year = date.getFullYear();
 
-  return `${day+1} ${month} ${year}`;
+  return `${day+1} de ${month} ${year}`;
 };
 
 export const convertTimeToLocal = (timeString: string, timeZone: string): string => {
@@ -60,10 +60,10 @@ export const groupLeaguesByCountry = (items: any[]): CountriesWithLeagues[] => {
 
 
 export const statusFilters: Record<number, (match: any) => boolean> = {
-  0: () => true, // Mostrar todos los partidos
-  1: (match: any) => match.matchInfo.live === '1', // Mostrar partidos en vivo
-  2: (match: any) => match.matchInfo.status === '' || match.matchInfo.status === 'Postponed' , // Mostrar partidos próximos
-  3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0', // Mostrar partidos terminados
+  0: () => true, 
+  1: (match: any) => match.matchInfo.live === '1', 
+  2: (match: any) => match.matchInfo.status === '' || match.matchInfo.status === 'Postponed' ,
+  3: (match: any) => match.matchInfo.status !== '' && match.matchInfo.live == '0',
 };
 
 export const getFavoriteMatches = async (sessionId: string) => {
@@ -85,4 +85,16 @@ export const httpPostActions = {
   "POST_FAVORITES": "insertFavorite",
   "PUT_FAVORITES": "updateFavorite",
   "DELETE_FAVORITES": "deleteFavorite"
+}
+
+export function filterUniqueScorers(scorers: Scorers[]): Scorers[] {
+  const uniqueScorersMap = new Map();
+  
+  return scorers.filter((scorer) => {
+    if (uniqueScorersMap.has(scorer.key)) {
+      return false; 
+    }
+    uniqueScorersMap.set(scorer.key, true); 
+    return true;
+  });
 }

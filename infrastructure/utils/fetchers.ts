@@ -10,7 +10,6 @@ export const customFetcher = async (url: string, remapFunction: Function) => {
   return remappedData;
 };
 
-
 export const fetchFavorites = async (sessionId: string) => {
   if (!sessionId) return 'No session id provided';
   
@@ -40,8 +39,7 @@ export const handleAddFavorite = async (id: string, sessionId: string) => {
     const data = await response?.data;
     return Boolean(data);
 };
-
-
+ 
 export const handleRemoveFavorite = async (id: string, sessionId: string) => {
   if (!sessionId) {
     console.error('No session found');

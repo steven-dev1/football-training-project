@@ -23,7 +23,7 @@ axios.interceptors.response.use(
         return response
     },
     (error) => {
-        console.log('Error: ' + error.code) //
+        console.log('Error: ' + error.code)
         return Promise.reject(error.message)
     }
 )

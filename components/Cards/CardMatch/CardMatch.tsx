@@ -5,7 +5,7 @@ import { ItemInfo, MatchInfo } from "@/types/GameData";
 import StatusTag from "./StatusTag";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import { convertTimeToLocal, formatDate } from "@/infrastructure/utils/helpers";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { addFavorite,removeFavorite } from "@/redux/features/favoritesSlice";
 import { handleAddFavorite, handleRemoveFavorite } from "@/infrastructure/utils/fetchers";
@@ -50,7 +50,7 @@ export const CardMatch = ({ matchInfo, teamHome, teamAway, orientation }: MatchP
   const status = matchInfo.status === 'Finished' ? 'Finalizado' : matchInfo.status === 'Postponed' ? 'Pospuesto' : matchInfo.status;
 
   return (
-    <article className={`relative group rounded-lg w-full cursor-pointer ${isHorizontal ? 'flex items-center gap-2 justify-between bg-projectGrays-500 px-3 py-2' : 'flex flex-col items-center border border-projectGrays-300 p-3 gap-4'}`}>
+    <article className={`relative group rounded-lg w-full cursor-pointer ${isHorizontal ? 'flex items-center gap-2 justify-between px-3 py-2' : 'flex flex-col items-center border border-projectGrays-300 p-3 gap-4'}`}>
       {isHorizontal ? (
         <>
           <div className="w-[13%] max-w-[13%]"><StatusTag isLive={matchInfo.live === '1'} status={status} time={localTime} /></div>
@@ -61,9 +61,9 @@ export const CardMatch = ({ matchInfo, teamHome, teamAway, orientation }: MatchP
       )}
 
       <div className={`w-full flex justify-evenly ${isHorizontal ? 'items-center' : 'items-start gap-6'}`}>
-        <div className={`${isHorizontal ? 'w-[25%] justify-end' : ''}`}><LogoItem {...teamHome} orientation={orientation} logoPosition="right" /></div>
+        <div className={`${isHorizontal ? 'w-[25%] justify-end' : ''}`}><LogoItem {...teamHome} href={`team/${teamHome.id}`} orientation={orientation} logoPosition="right" /></div>
         <div className="flex flex-col items-center w-[30%]"><MatchStatus matchInfo={matchInfo} scoreHome={teamHome.score ?? '-'} scoreAway={teamAway.score ?? '-'} formattedDate={formatDate(matchInfo.date)} localTime={localTime} orientation={orientation} /></div>
-        <div className={`${isHorizontal ? 'w-[25%] justify-start' : ''}`}><LogoItem {...teamAway} orientation={orientation} logoPosition="left" /></div>
+        <div className={`${isHorizontal ? 'w-[25%] justify-start' : ''}`}><LogoItem {...teamAway} href={`team/${teamAway.id}`} orientation={orientation} logoPosition="left" /></div>
       </div>
       <div className={`${isHorizontal ? 'flex items-center' : 'absolute top-0 right-0'} ${favorite ? '': 'opacity-0 group-hover:opacity-100'}`}>
         <button onClick={handleFavoriteToggle} className="p-2">

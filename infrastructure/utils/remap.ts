@@ -1,6 +1,6 @@
 import { OriginalApiData } from "@/types/Api.model";
 import { RemapFunctionType } from "@/types/Functions";
-import { CountriesWithLeagues, Country, Match, League, MatchesByLeague, StandingTables } from "@/types/GameData";
+import { CountriesWithLeagues, Country, Match, League, MatchesByLeague, StandingTables, Scorers, MatchesByDate } from "@/types/GameData";
 
 export const remapFavorites: RemapFunctionType<Match, OriginalApiData> = (data) => {
     return data.map((item) => ({
@@ -69,6 +69,45 @@ export const remapMatchesByLeague: RemapFunctionType<MatchesByLeague, OriginalAp
     }, {} as Record<string, MatchesByLeague>);
 }
 
+export const remapAndGroupMatchesByDate = (data: any[]): MatchesByDate => {
+    const remappedMatches = data.map((match) => ({
+      matchInfo: {
+        date: match.match_date,
+        live: match.match_live,
+        time: match.match_time,
+        league: match.league_name,
+        logo: match.league_logo,
+        status: match.match_status,
+        id: match.match_id,
+      },
+      teamHome: {
+        id: match.match_hometeam_id,
+        name: match.match_hometeam_name,
+        srcLogo: match.team_home_badge,
+        score: match.match_hometeam_score,
+      },
+      teamAway: {
+        id: match.match_awayteam_id,
+        name: match.match_awayteam_name,
+        srcLogo: match.team_away_badge,
+        score: match.match_awayteam_score,
+      } 
+    }));
+  
+    
+    return remappedMatches.reduce((acc: MatchesByDate, match: Match) => {
+      const matchDate = match.matchInfo.date;
+  
+      if (!acc[matchDate]) {
+        acc[matchDate] = [];
+      }
+  
+      acc[matchDate].push(match);
+      
+      return acc;
+    }, {});
+  };
+
 export const remapLeaguesByCountry: RemapFunctionType<CountriesWithLeagues, OriginalApiData> = (data) => {
     return data.reduce((accumulator: Record<string, CountriesWithLeagues>, item) => {
         const country: Country = {
@@ -136,6 +175,19 @@ export const remapStandingTable: RemapFunctionType<StandingTables, OriginalApiDa
             goalsAgainst: item.away_league_GA,
             points: item.away_league_PTS,
         }
+    }));
+};
+
+export const remapScorers: RemapFunctionType<Scorers, OriginalApiData> = (data) => {
+    return data.map((item) => ({
+        position: item.player_place,
+        name: item.player_name,
+        key: item.player_key,
+        teamName: item.team_name,
+        teamKey: item.team_key,
+        goals: item.goals,
+        assists: item.assists,
+        penaltyGoals: item.penalty_goals
     }));
 };
 

@@ -22,7 +22,6 @@ export const favoritesSlice = createSlice({
         },
         listFavorites: (state, action: PayloadAction<string[]>) => {
             state.favorites = action.payload;
-            console.log(state.favorites)
         }
     },
 });
