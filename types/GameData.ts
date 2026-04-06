@@ -34,7 +34,6 @@ export interface MatchInfo {
     id: string;
 };
 
-
 export interface ItemInfo {
     id: string;
     name: string;
@@ -72,4 +71,24 @@ export interface CountriesWithLeagues {
 export interface MatchesByLeague {
     league: League;
     matches: Match[];
+}
+
+export interface MatchesByDate {
+    [date: string]: Match[];
+}
+
+export interface StandingTableProps {
+    width: 'small' | 'large';
+    leagueId: string;
+}
+
+export interface Scorers {
+    position:  string,
+    name:  string,
+    key:  number,
+    teamName:  string,
+    teamKey:  string,
+    goals:  string,
+    assists:  string,
+    penaltyGoals: string 
 }

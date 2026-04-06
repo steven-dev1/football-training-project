@@ -71,10 +71,13 @@ export interface OriginalApiData {
   away_league_PTS: string;
   league_round: string;
   team_badge: string;
-}
-
-export interface TeamStats {
-
+  player_place: string,
+  player_name: string,
+  player_key: number,
+  team_key: string,
+  goals: string,
+  assists: string,
+  penalty_goals: string
 }
 
 export interface CardElement {

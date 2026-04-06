@@ -1,8 +1,10 @@
 'use client'
 import StandingTable from '@/components/Tables/StandingTable';
 import LeftNav from '@/components/Navs/LeftNav';
-import FavoritesSection from '@/components/Sections/FavouritesSection';
-import MatchesSection from '@/components/Sections/MatchesSection';
+import FavoritesSection from '@/components/Sections/Favorites/FavouritesSection';
+import React from 'react'
+import MatchesSection from '@/components/Sections/Matches/MatchesSection';
+
 export default function Home() {
 
   return (
@@ -15,7 +17,7 @@ export default function Home() {
         <MatchesSection />
       </div>
       <div className=''>
-        <StandingTable />
+        <StandingTable width='small' leagueId='302'/>
       </div>
     </>
   );

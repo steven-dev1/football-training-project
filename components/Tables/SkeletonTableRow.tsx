@@ -1,19 +1,35 @@
-export const SkeletonTableRow = () => {
+export const SkeletonTableRow = ({ isLarge }: { isLarge: boolean }) => {
     return (
-      <tr className="odd:bg-[#2C2C2C] p-2 rounded-lg">
-        <td className="m-1 ml-0 pl-2 text-center w-8 font-semibold">
-          <div className="bg-gray-300 h-4 w-4 rounded"></div>
+      <tr>
+        <td className="pl-2 text-center py-2 animate-pulse">
+            <div className="bg-projectGrays-300 h-4 w-4 mx-auto rounded animate-pulse"></div>
         </td>
-        <td className="m-1 ml-0 px-1 flex items-center gap-2">
-          <div className="bg-gray-300 h-8 w-8 rounded-full"></div>
-          <div className="bg-gray-300 h-4 w-[100px] rounded"></div>
+        <td className="px-1 py-2 max-w-[50px] animate-pulse">
+            <div className="bg-projectGrays-300 h-4 w-[100px] rounded animate-pulse"></div>
         </td>
-        <td className="m-1 ml-0 px-1">
-          <div className="bg-gray-300 h-4 w-8 rounded"></div>
+        <td className="px-1 py-2 animate-pulse">
+            <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
         </td>
-        <td className="m-1 ml-0 px-1">
-          <div className="bg-gray-300 h-4 w-8 rounded"></div>
+        <td className="px-1 py-2 animate-pulse">
+            <div className="bg-pro h-4 w-8 rounded animate-pulse"></div>
         </td>
-      </tr>
+        {isLarge && <>
+            <td className="px-1 py-2 animate-pulse">
+                <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
+            </td>
+            <td className="px-1 py-2 animate-pulse">
+                <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
+            </td>
+            <td className="px-1 py-2 animate-pulse">
+                <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
+            </td>
+            <td className="px-1 py-2 animate-pulse">
+                <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
+            </td>
+            <td className="px-1 py-2 animate-pulse">
+                <div className="bg-projectGrays-300 h-4 w-8 rounded animate-pulse"></div>
+            </td>
+        </>}
+    </tr>
     );
   };
